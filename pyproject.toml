@@ -1,0 +1,34 @@
+[build-system]
+requires = [
+    "setuptools >= 64",
+    "wheel >= 0.37.1",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claranet4"
+description = "Barebones Bleak-based client for the Aranet4 sensor"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["aranet4"]
+license = {text = "MIT License"}
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+]
+dependencies = [
+    "bleak >= 0.19.1",
+    "defopt >= 6.4.0",
+    "pre-commit",
+    "pytest"
+]
+dynamic = ["version"]
+[project.scripts]
+claranet4 = "claranet4.cli:main"
+
+[tool.setuptools.dynamic]
+version = {file = ["VERSION"]}
