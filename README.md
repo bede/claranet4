@@ -1,6 +1,6 @@
 # Claranet4
 
-Barebones (i.e. incomplete) Python & CLI client for collecting current readings from Aranet4 Bluetooth sensors.
+Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readings from Aranet4 Bluetooth sensors. There are two relatively mature existing Python client libraries, but I couldn't get either to work (MacOS 12.6). This  client uses Bleak and should work across platforms.
 
 ## Install
 
@@ -22,7 +22,7 @@ INFO: Found 1 Aranet4 device(s)
         "rssi": -64
     }
 ]
-% claranet4 nearest 
+% claranet4 nearest
 INFO: Found 67 device(s)
 INFO: Found 1 Aranet4 device(s)
 INFO: Selected Aranet4 1D6BA (-69dBm)
