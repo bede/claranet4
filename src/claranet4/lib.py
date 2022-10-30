@@ -5,9 +5,8 @@ from bleak import BleakScanner, BleakClient
 
 
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(levelname)s: %(message)s",
-    stream=sys.stderr)
+    level=logging.INFO, format="%(levelname)s: %(message)s", stream=sys.stderr
+)
 
 
 def le16(data, start=0):
@@ -24,9 +23,10 @@ def le16(data, start=0):
 
 class Reading:
     """Test"""
+
     def __init__(self, response):
         self.co2 = le16(response)
-        self.temperature = round(le16(response, 2)/20, 1)
+        self.temperature = round(le16(response, 2) / 20, 1)
         self.pressure = round(le16(response, 4) / 10, 1)
         self.humidity = round(le16(response, 5) / 255, 1)
 
@@ -42,7 +42,7 @@ async def discover_a4s(sort_by_rssi=True):
     a4_devices = [d for d in await discover() if d["name"] and A4_STRING in d["name"]]
     logging.info(f"Found {len(a4_devices)} Aranet4 device(s)")
     if sort_by_rssi:
-        a4_devices = sorted(a4_devices, key=lambda d: d['rssi'], reverse=True)
+        a4_devices = sorted(a4_devices, key=lambda d: d["rssi"], reverse=True)
     return a4_devices
 
 

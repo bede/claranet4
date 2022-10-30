@@ -7,7 +7,10 @@ from claranet4.lib import get_nearest_reading, discover_a4s
 
 def discover():
     a4_devices = asyncio.run(discover_a4s())
-    a4_devices_subset = [{k: v for k, v in d.items() if k in {"address", "name", "rssi"}} for d in a4_devices]
+    a4_devices_subset = [
+        {k: v for k, v in d.items() if k in {"address", "name", "rssi"}}
+        for d in a4_devices
+    ]
     print(json.dumps(a4_devices_subset, indent=4))
 
 

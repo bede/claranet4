@@ -24,7 +24,8 @@ dependencies = [
     "bleak >= 0.19.1",
     "defopt >= 6.4.0",
     "pre-commit",
-    "pytest"
+    "pytest",
+    "black"
 ]
 dynamic = ["version"]
 [project.scripts]
