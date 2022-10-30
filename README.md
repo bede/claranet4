@@ -7,7 +7,8 @@ Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readi
 Python >= 3.10
 
 ```
-pip install ./
+git clone https://github.com/bede/claranet4.git
+pip install ./claranet4
 ```
 
 ## Usage
