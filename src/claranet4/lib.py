@@ -18,7 +18,7 @@ class Device:
 
 
 class Reading:
-    def __init__(self, device, response: bytearray):
+    def __init__(self, device: Device, response: bytearray):
         self.name: str = device.name
         self.address: str = device.address
         self.rssi: int = device.rssi
