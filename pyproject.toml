@@ -27,7 +27,7 @@ dependencies = [
     "pytest",
     "black"
 ]
-dynamic = ["version"]
+dynamic = ["VERSION"]
 [project.scripts]
 claranet4 = "claranet4.cli:main"
 

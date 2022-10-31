@@ -1,4 +1,5 @@
 import asyncio
+from dataclasses import dataclass
 import logging
 import sys
 from bleak import BleakScanner, BleakClient
@@ -9,60 +10,72 @@ logging.basicConfig(
 )
 
 
-def le16(data, start=0):
-    """
-    Read value from byte array as a long integer
+@dataclass
+class Device:
+    address: str
+    name: str
+    rssi: int
 
-    :param bytearray data:  Array of bytes to read from
-    :param int start:  Offset to start response at
-    :return int:  An integer, read from the first two bytes at the offset.
-    """
+
+class Reading:
+    def __init__(self, device, response: bytearray):
+        self.name: str = device.name
+        self.address: str = device.address
+        self.rssi: int = device.rssi
+        self.co2: int = le16(response)
+        self.temperature: float = round(le16(response, 2) / 20, 1)
+        self.pressure: float = round(le16(response, 4) / 10, 1)
+        self.humidity: float = round(le16(response, 5) / 255, 1)
+
+
+def le16(data: bytearray, start: int = 0) -> int:
+    """Read long integer from specified offset of bytearray"""
     raw = bytearray(data)
     return raw[start] + (raw[start + 1] << 8)
 
 
-class Reading:
-    """Test"""
-
-    def __init__(self, response):
-        self.co2 = le16(response)
-        self.temperature = round(le16(response, 2) / 20, 1)
-        self.pressure = round(le16(response, 4) / 10, 1)
-        self.humidity = round(le16(response, 5) / 255, 1)
-
-
-async def discover():
-    devices = [d.__dict__ for d in await BleakScanner.discover()]
+async def discover() -> list[Device]:
+    """Return list of Devices sorted by descending RSSI dBm"""
+    devices = [
+        Device(address=d.address, name=str(d.name), rssi=d.rssi)
+        for d in await BleakScanner.discover()
+    ]
     logging.info(f"Found {len(devices)} device(s)")
-    return devices
+    return sorted(devices, key=lambda d: d.rssi, reverse=True)
 
 
-async def discover_a4s(sort_by_rssi=True):
-    A4_STRING = "Aranet4"
-    a4_devices = [d for d in await discover() if d["name"] and A4_STRING in d["name"]]
-    logging.info(f"Found {len(a4_devices)} Aranet4 device(s)")
-    if sort_by_rssi:
-        a4_devices = sorted(a4_devices, key=lambda d: d["rssi"], reverse=True)
-    return a4_devices
-
-
-async def get_response(address):
+async def request_measurements(address: str) -> bytearray:
+    """Request measurements bytearray for target address"""
     UUID_CURRENT_MEASUREMENTS_SIMPLE = "f0cd1503-95da-4f4b-9ac8-aa55d312af0c"
     async with BleakClient(address) as client:
         return await client.read_gatt_char(UUID_CURRENT_MEASUREMENTS_SIMPLE)
 
 
-async def get_reading(address):
-    return Reading(await get_response(address))
+def scan() -> list[Device]:
+    """Show Bluetooth devices in the vicinity"""
+    return asyncio.run(discover())
 
 
-def get_nearest_reading():
-    a4_devices = asyncio.run(discover_a4s())
-    this_device = a4_devices[0]
-    logging.info(f"Selected {this_device['name']} ({this_device['rssi']}dBm)")
-    reading = asyncio.run(get_reading(this_device["address"]))
-    return reading
+def discover_ara4s(substring: str = "Aranet4") -> list[Device]:
+    """Find Aranet4s in the vicinity"""
+    devices = scan()
+    ara4_devices = [d for d in devices if substring in d.name]
+    logging.info(f"Found {len(ara4_devices)} Aranet4 device(s)")
+    return ara4_devices
 
 
-def main():
-    get_nearest_reading()
+def find_device(address) -> Device:
+    """Find Device by address"""
+    r = asyncio.run(BleakScanner.find_device_by_address(address))
+    return Device(address=r.address, name=str(r.name), rssi=r.rssi)
+
+
+def read(address: str = "") -> Reading:
+    if address:
+        device = find_device(address)
+    else:
+        ara4_devices = discover_ara4s()
+        device = ara4_devices[0]
+    logging.info(f"Selected {device.name} ({device.rssi}dBm)")
+    measurements = asyncio.run(request_measurements(device.address))
+    return Reading(device, measurements)

@@ -1,31 +1,47 @@
-import asyncio
 import json
 import defopt
 
-from claranet4.lib import get_nearest_reading, discover_a4s
+import claranet4.lib as lib
 
 
-def discover():
-    a4_devices = asyncio.run(discover_a4s())
-    a4_devices_subset = [
-        {k: v for k, v in d.items() if k in {"address", "name", "rssi"}}
-        for d in a4_devices
-    ]
-    print(json.dumps(a4_devices_subset, indent=4))
+def dictify(obj):
+    return obj.__dict__
 
 
-def nearest():
-    print(json.dumps(get_nearest_reading().__dict__, indent=4))
+def scan():
+    """
+    Show Bluetooth devices in the vicinity
+    """
+    devices = lib.scan()
+    print(json.dumps(devices, default=dictify, indent=4))
+
+
+def discover(*, substring: str = "Aranet4"):
+    """
+    Discover Aranet4 devices in the vicinity
+
+    :arg substring: device name substring used to identify Aranet4s
+    """
+    ara4_devices = lib.discover_ara4s()
+    print(json.dumps(ara4_devices, default=dictify, indent=4))
+
+
+def read(address: str = ""):
+    """
+    Read current measurements from Aranet4 devices in the vicinity
+
+    :arg address: target device address
+    """
+    print(json.dumps(lib.read(address), default=dictify, indent=4))
 
 
 def main():
     defopt.run(
         {
+            "scan": scan,
             "discover": discover,
-            "nearest": nearest,
+            "read": read,
         },
-        no_negated_flags=True,
-        strict_kwonly=False,
         short={},
     )
 
