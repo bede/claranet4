@@ -5,6 +5,10 @@ import sys
 from bleak import BleakScanner, BleakClient
 
 
+class DeviceError(RuntimeError):
+    pass
+
+
 logging.basicConfig(
     level=logging.INFO, format="%(levelname)s: %(message)s", stream=sys.stderr
 )
@@ -67,7 +71,10 @@ def discover_ara4s(substring: str = "Aranet4") -> list[Device]:
 def find_device(address) -> Device:
     """Find Device by address"""
     r = asyncio.run(BleakScanner.find_device_by_address(address))
-    return Device(address=r.address, name=str(r.name), rssi=r.rssi)
+    if r:
+        return Device(address=r.address, name=str(r.name), rssi=r.rssi)
+    else:
+        raise DeviceError("Error finding device")
 
 
 def read(address: str = "") -> Reading:

@@ -1,7 +1,12 @@
 import asyncio
 import pytest
+import subprocess
 
 from claranet4.lib import Device, Reading
+
+
+def run(cmd, cwd="./"):  # Helper for CLI testing
+    return subprocess.run(cmd, shell=True, check=True, text=True, capture_output=True)
 
 
 @pytest.fixture
@@ -26,3 +31,7 @@ def test_reading(device, measurements):
         "pressure": 1002.7,
         "humidity": 73.4,
     }
+
+
+def test_cli_version():
+    run("claranet4 --version")

@@ -23,13 +23,14 @@ classifiers = [
 dependencies = [
     "bleak >= 0.19.1",
     "defopt >= 6.4.0",
-    "pre-commit",
-    "pytest",
-    "black"
+#    "pre-commit",
+#    "pytest",
+#    "black",
+#    "build",
 ]
-dynamic = ["VERSION"]
+dynamic = ["version"]
 [project.scripts]
 claranet4 = "claranet4.cli:main"
 
 [tool.setuptools.dynamic]
-version = {file = ["VERSION"]}
+version = {attr = "claranet4.__version__"}

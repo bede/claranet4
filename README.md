@@ -1,18 +1,44 @@
-# Claranet4
+# ClAranet4
 
-Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readings from Aranet4 Bluetooth sensors. There are two relatively mature existing Python client libraries, but I couldn't get either to work (MacOS 12.6). This  client uses Bleak and should work across platforms.
+Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readings from Aranet4 Bluetooth sensors. This client uses [Bleak](https://github.com/hbldh/bleak) and should work across platforms, and has been tested on Intel and ARM64 Macs.
 
 ## Install
 
 Python >= 3.10
 
 ```
+pip install claranet4
+```
+
+
+
+```
 git clone https://github.com/bede/claranet4.git
 pip install ./claranet4
 ```
 
-## Usage
+## CLI usage
+
 ```
+% claranet4 --help
+usage: claranet4 [-h] [--version] {scan,discover,read} ...
+
+positional arguments:
+  {scan,discover,read}
+    scan                Show nearby Bluetooth devices
+    discover            Discover nearby Aranet4 devices
+    read                Request latest measurements from a nearby Aranet4 device
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+```
+
+
+
+Enumerate nearby Aranet4 devices
+
+```bash
 % claranet4 discover
 INFO: Found 9 device(s)
 INFO: Found 1 Aranet4 device(s)
@@ -23,6 +49,13 @@ INFO: Found 1 Aranet4 device(s)
         "rssi": -71
     }
 ]
+```
+
+
+
+Request measurements from an Aranet4 by address. If the device is unpaired, a prompt should appear for the pairing code.
+
+```bash
 % claranet4 read 390F544C-F0FF-F8BE-3A3A-BB1219AA2145
 INFO: Selected Aranet4 1D6BA (-74dBm)
 {
@@ -34,6 +67,13 @@ INFO: Selected Aranet4 1D6BA (-74dBm)
     "pressure": 1002.1,
     "humidity": 73.4
 }
+```
+
+
+
+Executing `claranet4 read` without specifying an address will request measurements from the Aranet4 with the highest received signal strength (RSSI)
+
+```bash
 % claranet4 read
 INFO: Found 9 device(s)
 INFO: Found 1 Aranet4 device(s)
@@ -47,4 +87,19 @@ INFO: Selected Aranet4 1D6BA (-74dBm)
     "pressure": 1002.1,
     "humidity": 73.4
 }
+```
+
+
+
+## API usage
+
+```python
+>>> from claranet4.lib import discover_ara4s, read
+>>> discover_ara4s()
+INFO: Found 28 device(s)
+INFO: Found 1 Aranet4 device(s)
+[Device(address='390F544C-F0FF-F8BE-3A3A-BB1219AA2145', name='Aranet4 1D6BA', rssi=-70)]
+>>> read("390F544C-F0FF-F8BE-3A3A-BB1219AA2145").__dict__
+INFO: Selected Aranet4 1D6BA (-74dBm)
+{'name': 'Aranet4 1D6BA', 'address': '390F544C-F0FF-F8BE-3A3A-BB1219AA2145', 'rssi': -74, 'co2': 715, 'temperature': 20.4, 'pressure': 991.4, 'humidity': 63.4}
 ```

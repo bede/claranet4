@@ -10,7 +10,7 @@ def dictify(obj):
 
 def scan():
     """
-    Show Bluetooth devices in the vicinity
+    Show nearby Bluetooth devices
     """
     devices = lib.scan()
     print(json.dumps(devices, default=dictify, indent=4))
@@ -18,7 +18,7 @@ def scan():
 
 def discover(*, substring: str = "Aranet4"):
     """
-    Discover Aranet4 devices in the vicinity
+    Discover nearby Aranet4 devices
 
     :arg substring: device name substring used to identify Aranet4s
     """
@@ -28,7 +28,7 @@ def discover(*, substring: str = "Aranet4"):
 
 def read(address: str = ""):
     """
-    Read current measurements from Aranet4 devices in the vicinity
+    Request latest measurements from a nearby Aranet4 device
 
     :arg address: target device address
     """

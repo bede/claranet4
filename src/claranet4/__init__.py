@@ -1,3 +1,1 @@
-import importlib.metadata
-
-__version__ = importlib.metadata.version("claranet4")
+__version__ = "0.1.0"
