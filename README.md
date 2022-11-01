@@ -4,18 +4,17 @@ Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readi
 
 ## Install
 
-Python >= 3.10
-
-```
+```bash
+# Python >= 3.10
 pip install claranet4
-```
 
-
-
-```
+# Development
 git clone https://github.com/bede/claranet4.git
-pip install ./claranet4
+pip install --editable ./claranet4
+pip install pytest build black pre-commit
 ```
+
+
 
 ## CLI usage
 
