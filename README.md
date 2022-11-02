@@ -1,6 +1,12 @@
+![Tests](https://github.com/bede/claranet4/actions/workflows/test.yml/badge.svg) [![PyPI version](https://badge.fury.io/py/claranet4.svg)](https://badge.fury.io/py/claranet4)
+
 # ClAranet4
 
-Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readings from Aranet4 Bluetooth sensors. This client uses [Bleak](https://github.com/hbldh/bleak) and should work across platforms, and has been tested on Intel and ARM64 Macs.
+Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readings from Aranet4 Bluetooth sensors. This client uses [Bleak](https://github.com/hbldh/bleak) and should work across platforms, and has been tested on Intel and ARM64 Macs. An xbar plugin for displaying measurements in the MacOS menu bar is included.
+
+![screenshot](/Users/bede/Research/Git/claranet4/xbar/screenshot.png)
+
+
 
 ## Install
 
@@ -102,3 +108,13 @@ INFO: Found 1 Aranet4 device(s)
 INFO: Selected Aranet4 1D6BA (-74dBm)
 {'name': 'Aranet4 1D6BA', 'address': '390F544C-F0FF-F8BE-3A3A-BB1219AA2145', 'rssi': -74, 'co2': 715, 'temperature': 20.4, 'pressure': 991.4, 'humidity': 63.4}
 ```
+
+
+
+## MacOS menu bar usage
+
+1. Install xbar (https://github.com/matryer/xbar).
+2. Download the MacOS executable for the latest release of Claranet4 https://github.com/bede/claranet4/releases).
+3. Download the xbar plugin `claranet4.2m.sh` from the xbar directory of this repository. Change the path at the bottom of this file to point to wherever your executable is stored.
+4. Open xbar, and open your plugins folder. Put `claranet4.2m.sh` inside it.
+5. Open System Preferences -> Security and Privacy and grant xbar permissions for Bluetooth, Automation and Developer Tools.
