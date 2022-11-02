@@ -1,3 +1,5 @@
+![Tests](https://github.com/bede/claranet4/actions/workflows/test.yml/badge.svg) [![PyPI version](https://badge.fury.io/py/claranet4.svg)](https://badge.fury.io/py/claranet4)
+
 # ClAranet4
 
 Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readings from Aranet4 Bluetooth sensors. This client uses [Bleak](https://github.com/hbldh/bleak) and should work across platforms, and has been tested on Intel and ARM64 Macs.
