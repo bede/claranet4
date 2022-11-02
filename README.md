@@ -4,7 +4,7 @@
 
 Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readings from Aranet4 Bluetooth sensors. This client uses [Bleak](https://github.com/hbldh/bleak) and should work across platforms, and has been tested on Intel and ARM64 Macs. An xbar plugin for displaying measurements in the MacOS menu bar is included.
 
-![screenshot](/Users/bede/Research/Git/claranet4/xbar/screenshot.png)
+![screenshot](xbar/screenshot.png)
 
 
 
@@ -19,6 +19,7 @@ git clone https://github.com/bede/claranet4.git
 pip install --editable ./claranet4
 pip install pytest build black pre-commit
 ```
+Alternatively, use the static binary built from the [latest release](https://github.com/bede/claranet4/releases/)
 
 
 
