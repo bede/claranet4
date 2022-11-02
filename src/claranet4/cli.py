@@ -1,5 +1,6 @@
 import json
 import defopt
+import logging
 
 from typing import Literal
 
@@ -31,14 +32,18 @@ def discover(*, substring: str = "Aranet4"):
 def read(
     address: str = "",
     *,
-    field: Literal["co2", "temperature", "pressure", "humidity", ""] = ""
+    field: Literal["co2", "temperature", "pressure", "humidity", ""] = "",
+    quiet: bool = False,
 ):
     """
     Request latest measurements from a nearby Aranet4 device
 
     :arg address: target device address
     :arg field: return a specified field value only
+    :arg quiet: suppress notices on stderr
     """
+    if quiet:
+        logging.getLogger().setLevel("WARNING")
     reading = lib.read(address)
     if field:
         print(getattr(reading, field))
@@ -54,6 +59,7 @@ def main():
             "read": read,
         },
         short={},
+        no_negated_flags=True,
     )
 
 

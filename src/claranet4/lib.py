@@ -1,18 +1,25 @@
 import asyncio
 from dataclasses import dataclass
 import logging
-import sys
 from bleak import BleakScanner, BleakClient
-
-
-class DeviceError(RuntimeError):
-    pass
 
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(levelname)s: %(message)s",
 )
+
+
+class DeviceError(RuntimeError):
+    pass
+
+
+FIELDS_UNITS = {
+    "co2": "ppm",
+    "temperature": "°C",
+    "pressure": "mbar",
+    "humidity": "%",
+}
 
 
 @dataclass
@@ -75,7 +82,7 @@ def find_device(address) -> Device:
     if r:
         return Device(address=r.address, name=str(r.name), rssi=r.rssi)
     else:
-        raise DeviceError("Error finding device")
+        raise DeviceError(f"Could not find device {address}")
 
 
 def read(address: str = "") -> Reading:
@@ -83,7 +90,10 @@ def read(address: str = "") -> Reading:
         device = find_device(address)
     else:
         ara4_devices = discover_ara4s()
-        device = ara4_devices[0]
+        if not ara4_devices:
+            raise DeviceError("No Aranet4 devices discovered")
+        else:
+            device = ara4_devices[0]
     logging.info(f"Selected {device.name} ({device.rssi}dBm)")
     measurements = asyncio.run(request_measurements(device.address))
     return Reading(device, measurements)

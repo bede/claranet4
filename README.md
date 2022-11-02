@@ -5,7 +5,7 @@ Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readi
 ## Install
 
 ```bash
-# Python >= 3.10
+# Python >= 3.10, setuptools >= 64
 pip install claranet4
 
 # Development
