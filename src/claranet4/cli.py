@@ -1,6 +1,8 @@
 import json
 import defopt
 
+from typing import Literal
+
 import claranet4.lib as lib
 
 
@@ -26,13 +28,22 @@ def discover(*, substring: str = "Aranet4"):
     print(json.dumps(ara4_devices, default=dictify, indent=4))
 
 
-def read(address: str = ""):
+def read(
+    address: str = "",
+    *,
+    field: Literal["co2", "temperature", "pressure", "humidity", ""] = ""
+):
     """
     Request latest measurements from a nearby Aranet4 device
 
     :arg address: target device address
+    :arg field: return a specified field value only
     """
-    print(json.dumps(lib.read(address), default=dictify, indent=4))
+    reading = lib.read(address)
+    if field:
+        print(getattr(reading, field))
+    else:
+        print(json.dumps(reading, default=dictify, indent=4))
 
 
 def main():

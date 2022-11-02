@@ -10,7 +10,8 @@ class DeviceError(RuntimeError):
 
 
 logging.basicConfig(
-    level=logging.INFO, format="%(levelname)s: %(message)s", stream=sys.stderr
+    level=logging.INFO,
+    format="%(levelname)s: %(message)s",
 )
 
 
