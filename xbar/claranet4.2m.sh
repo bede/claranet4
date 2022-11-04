@@ -14,4 +14,4 @@
 # <xbar.desc>Example of how to include items that cycle in the top, and items that only appear in the dropdown.</xbar.desc>
 # <xbar.abouturl>https://github.com/bede/claranet4</xbar.abouturl>
 
-echo "$(/Users/bede/Git/claranet4/dist/claranet4-MacOS read --field co2)""ppm"
+echo "$(/Users/bede/Git/claranet4/dist/claranet4-MacOS read --field co2)""ppm CO\u2082"
