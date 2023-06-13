@@ -46,11 +46,12 @@ def le16(data: bytearray, start: int = 0) -> int:
     return raw[start] + (raw[start + 1] << 8)
 
 
-async def discover() -> list[Device]:
+async def discover(timeout: int = 5):
     """Return list of Devices sorted by descending RSSI dBm"""
+    discoveries = await BleakScanner.discover(timeout=timeout, return_adv=True)
     devices = [
-        Device(address=d.address, name=str(d.name), rssi=d.rssi)
-        for d in await BleakScanner.discover()
+        Device(address=d.address, name=str(d.name), rssi=a.rssi)
+        for d, a in discoveries.values()
     ]
     logging.info(f"Found {len(devices)} device(s)")
     return sorted(devices, key=lambda d: d.rssi, reverse=True)
@@ -63,14 +64,14 @@ async def request_measurements(address: str) -> bytearray:
         return await client.read_gatt_char(UUID_CURRENT_MEASUREMENTS_SIMPLE)
 
 
-def scan() -> list[Device]:
+def scan(timeout: int = 5) -> list[Device]:
     """Show Bluetooth devices in the vicinity"""
-    return asyncio.run(discover())
+    return asyncio.run(discover(timeout=timeout))
 
 
-def discover_ara4s(substring: str = "Aranet4") -> list[Device]:
+def discover_ara4s(substring: str = "Aranet4", timeout: int = 5) -> list[Device]:
     """Find Aranet4s in the vicinity"""
-    devices = scan()
+    devices = scan(timeout=timeout)
     ara4_devices = [d for d in devices if substring in d.name]
     logging.info(f"Found {len(ara4_devices)} Aranet4 device(s)")
     return ara4_devices
@@ -85,11 +86,11 @@ def find_device(address) -> Device:
         raise DeviceError(f"Could not find device {address}")
 
 
-def read(address: str = "") -> Reading:
+def read(address: str = "", timeout: int = 5) -> Reading:
     if address:
         device = find_device(address)
     else:
-        ara4_devices = discover_ara4s()
+        ara4_devices = discover_ara4s(timeout=timeout)
         if not ara4_devices:
             raise DeviceError("No Aranet4 devices discovered")
         else:
