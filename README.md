@@ -14,7 +14,15 @@ Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readi
 # Python >= 3.10, setuptools >= 64
 pip install claranet4
 
-# Development
+# Or using uv (recommended, faster)
+uv pip install claranet4
+
+# Development with uv (recommended)
+git clone https://github.com/bede/claranet4.git
+cd claranet4
+uv sync --group dev  # Installs all dependencies including dev tools
+
+# Development with pip (alternative)
 git clone https://github.com/bede/claranet4.git
 pip install --editable ./claranet4
 pip install pytest build black pre-commit
@@ -25,6 +33,13 @@ Alternatively, use the static binary built from the [latest release](https://git
 
 ## CLI usage
 
+If installed with uv for development, prefix commands with `uv run`:
+```bash
+uv run claranet4 --help
+uv run pytest  # Run tests
+```
+
+Otherwise, use the installed command directly:
 ```
 % claranet4 --help
 usage: claranet4 [-h] [--version] {scan,discover,read} ...
@@ -119,3 +134,22 @@ INFO: Selected Aranet4 1D6BA (-74dBm)
 3. Download the xbar plugin `claranet4.2m.sh` from the xbar directory of this repository. Change the path at the bottom of this file to point to wherever your executable is stored.
 4. Open xbar, and open your plugins folder. Put `claranet4.2m.sh` inside it.
 5. Open System Preferences -> Security and Privacy and grant xbar permissions for Bluetooth, Automation and Developer Tools.
+
+
+
+## Development & Publishing
+
+```bash
+# Run tests
+uv run pytest
+
+# Format code
+uv run black src/ tests/
+
+# Build and publish to PyPI
+uv build
+uv publish
+
+# Create release (update version in src/claranet4/__init__.py first)
+git tag 0.5.0 && git push origin main && git push origin 0.5.0
+```

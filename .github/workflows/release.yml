@@ -13,17 +13,17 @@ jobs:
     name: Python ${{ matrix.python-version }} (${{ matrix.os }})
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
       - name: Install dependencies
-        run: |
-          python -m pip install pytest pytest-cov pyinstaller
-          python -m pip install ./
+        run: uv sync --group dev
       - name: Build PyInstaller executable
         run: |
-          pyinstaller claranet4.spec
+          uv run pyinstaller claranet4.spec
           mv dist/claranet4 dist/claranet4-${RUNNER_OS}
       - name: Release
         uses: softprops/action-gh-release@v1

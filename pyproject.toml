@@ -11,11 +11,10 @@ description = "Barebones Bleak-based client for the Aranet4 sensor"
 readme = "README.md"
 requires-python = ">=3.10"
 keywords = ["aranet4"]
-license = {text = "MIT License"}
+license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3.10",
     "Environment :: Console",
-    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS",
@@ -23,14 +22,31 @@ classifiers = [
 dependencies = [
     "bleak ~= 1.1",
     "defopt ~= 7.0",
-#    "pre-commit",
-#    "pytest",
-#    "black",
-#    "build",
 ]
 dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "build",
+    "pre-commit",
+    "pyinstaller",
+]
+
 [project.scripts]
 claranet4 = "claranet4.cli:main"
 
 [tool.setuptools.dynamic]
 version = {attr = "claranet4.__version__"}
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "build",
+    "pre-commit",
+    "pyinstaller",
+]
