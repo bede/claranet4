@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.2] - 2025-11-22
+
+### Changed
+
+- Fix bug when specifying device address introduced in 0.4.0
+
 ## [0.4.1] - 2025-11-22
 
 ### Changed
