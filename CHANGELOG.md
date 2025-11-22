@@ -1,8 +1,16 @@
 # Changelog
 
+## [0.4.1] - 2025-11-22
+
+### Changed
+
+- Show error message for Linux when device is unpaired
+
 ## [0.4.0] - 2025-11-22
 
 ### Changed
+- Support for  `uv install`
+
 - Use Python 3.14
 - Tweak Bleak API usage
 - Pin dependencies to minor versions

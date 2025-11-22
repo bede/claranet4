@@ -43,6 +43,11 @@ class Reading:
 def le16(data: bytearray, start: int = 0) -> int:
     """Read long integer from specified offset of bytearray"""
     raw = bytearray(data)
+    if start + 1 >= len(raw):
+        raise DeviceError(
+            f"Response too short: expected at least {start + 2} bytes, got {len(raw)} bytes. "
+            "On Linux, you may need to pair the device first using bluetoothctl."
+        )
     return raw[start] + (raw[start + 1] << 8)
 
 
