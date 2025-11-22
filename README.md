@@ -11,11 +11,11 @@ Ultra-minimal (i.e. incomplete) Python & CLI client for collecting current readi
 ## Install
 
 ```bash
-# Python >= 3.10, setuptools >= 64
-pip install claranet4
+# Using uv (recommended) - installs in isolated environment
+uv tool install claranet4
 
-# Or using uv (recommended, faster)
-uv pip install claranet4
+# Using pip
+pip install claranet4  # Python >= 3.10, setuptools >= 64
 
 # Development with uv (recommended)
 git clone https://github.com/bede/claranet4.git
@@ -33,13 +33,7 @@ Alternatively, use the static binary built from the [latest release](https://git
 
 ## CLI usage
 
-If installed with uv for development, prefix commands with `uv run`:
-```bash
-uv run claranet4 --help
-uv run pytest  # Run tests
-```
-
-Otherwise, use the installed command directly:
+If installed with `uv tool install` or `pip install`, use the command directly:
 ```
 % claranet4 --help
 usage: claranet4 [-h] [--version] {scan,discover,read} ...
@@ -53,6 +47,12 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   --version             show program's version number and exit
+```
+
+For development installations (using `uv sync`), prefix commands with `uv run`:
+```bash
+uv run claranet4 --help
+uv run pytest  # Run tests
 ```
 
 
