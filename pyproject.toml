@@ -21,8 +21,8 @@ classifiers = [
     "Operating System :: MacOS",
 ]
 dependencies = [
-    "bleak >= 0.20.2",
-    "defopt >= 6.4.0",
+    "bleak ~= 1.1",
+    "defopt ~= 7.0",
 #    "pre-commit",
 #    "pytest",
 #    "black",

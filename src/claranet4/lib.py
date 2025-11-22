@@ -79,9 +79,10 @@ def discover_ara4s(substring: str = "Aranet4", timeout: int = 5) -> list[Device]
 
 def find_device(address) -> Device:
     """Find Device by address"""
-    r = asyncio.run(BleakScanner.find_device_by_address(address))
-    if r:
-        return Device(address=r.address, name=str(r.name), rssi=r.rssi)
+    result = asyncio.run(BleakScanner.find_device_by_address(address, return_adv=True))
+    if result:
+        d, a = result
+        return Device(address=d.address, name=str(d.name), rssi=a.rssi)
     else:
         raise DeviceError(f"Could not find device {address}")
 
